@@ -17,6 +17,20 @@ Route::get('/', function () {
 
 Route::get("tests/test", "TestController@index");
 
+// RESTfulな書き方
+// Route::resource('contacts', "ContactFormController")->only([
+//     "index", "show"
+// ]);
+// Route::resource('contacts', "ContactFormController");
+
+
+
+
+Route::group(["prefix" => "contact", "middleware" => "auth"], function(){
+    Route::get("index", "ContactFormController@index")->name("contact.index");
+});
+
 Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
