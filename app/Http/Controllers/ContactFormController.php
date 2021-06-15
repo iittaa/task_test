@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactForm;
+use Illuminate\Support\Facades\DB;
 
 class ContactFormController extends Controller
 {
@@ -14,9 +15,20 @@ class ContactFormController extends Controller
      */
     public function index()
     {
-        //
+        // エロクアント ORマッパー
+        // $contacts = ContactForm::all();
+
+        // クエリビルダ
+        $contacts = DB::table("contact_forms")
+        ->select("id", "your_name", "title", "created_at")
+        ->orderBy("created_at", "desc")
+        ->get();
+
+        // dd($contacts);
+
         // return view("[フォルダ名].[ファイル名]");
-        return view("contact.index");
+        return view("contact.index", compact("contacts"));
+
     }
 
     /**
@@ -39,7 +51,6 @@ class ContactFormController extends Controller
     public function store(Request $request)
     {
          $contact = new ContactForm();
-
 
         //$_POST["name"] 本来ならスーパーグローバル変数を使うが。。。
         $contact->your_name = $request->input("your_name");
